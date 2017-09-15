@@ -1,4 +1,5 @@
-import el from './element';
+import chart from './chart';
 
 const app = document.getElementById('app');
-app.appendChild(el);
+
+app.appendChild(chart);

@@ -5,7 +5,9 @@ import {
   heatMap as heatMapClass,
   legendText
 } from './heatMap.scss';
+
 import Svg from './Svg';
+import Loading from './Loading';
 
 const min = 0;
 const max = 9;
@@ -18,6 +20,12 @@ const getStepsNum = partial(
 
 const app = document.getElementById('app');
 
+const loading = new Loading();
+
+loading.appendToNode(app);
+loading.startAnimation();
+setTimeout(() => loading.removeFromNode(app), 3000);
+
 // const url = 'https://raw.githubusercontent.com/FreeCodeCamp/ProjectReferenceData/master/global-temperature.json';
 // fetch(url).then(response => response.json()).then(console.log);
 
@@ -27,7 +35,7 @@ const svg = new Svg(heatMapClass);
 svg
   .setColorScale([0, 10])
   .appendHeatMap({
-    data: range(min, max + 1, step),
+    data: range(min, max + step, step),
     width: 8,
     height: 20
   })

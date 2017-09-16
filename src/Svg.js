@@ -8,7 +8,12 @@ class Svg {
   }
 
   setColorScale(domain = [0, 1]) {
-    this.scale = d3.scaleSequential(d3.interpolatePlasma).domain(domain);
+    this.colorScale = d3.scaleSequential(d3.interpolatePlasma).domain(domain);
+    return this;
+  }
+
+  setLinearScale(domain = [0, 1], range = [0, 1]) {
+    this.linearScale = d3.scaleLinear().domain(domain).range(range);
     return this;
   }
 
@@ -23,29 +28,33 @@ class Svg {
       .enter().append('rect')
       .attr('width', width)
       .attr('height', height)
-      .attr('x', (_, i) => i * width)
+      .attr('x', (_, i) => this.linearScale ? this.linearScale(i) : i * width)
       .attr('y', y)
-      .style('fill', d => this.scale(d));
+      .style('fill', d => this.colorScale(d));
     return this;
   }
 
   appendTextGroup({
     data = [0, 1],
     offset = { x: 0, y: 0 },
-    className = ''
+    shift = { x: 0, y: 0 },
+    className = '',
+    fontSize = 14
   }) {
     this.svg.append('g')
       .selectAll().data(data)
       .enter().append('text')
       .text(d => JSON.stringify(d))
-      .attr('x', (_, i) => i * offset.x)
-      .attr('y', offset.y)
+      .attr('x', (_, i) => i * offset.x + shift.x)
+      .attr('y', offset.y + shift.y)
+      .attr('font-size', fontSize)
       .classed(className, true);
     return this;
   }
 
-  getSvgNode() {
-    return this.svg.node();
+  appendToNode(node) {
+    node.appendChild(this.svg.node());
+    return this;
   }
 }
 

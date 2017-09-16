@@ -7,6 +7,16 @@ class Svg {
     ).classed(className, true);
   }
 
+  setWidth(width) {
+    this.svg.attr('width', width);
+    return this;
+  }
+
+  setHeight(height) {
+    this.svg.attr('height', height);
+    return this;
+  }
+
   setColorScale(domain = [0, 1]) {
     this.colorScale = d3.scaleSequential(d3.interpolatePlasma).domain(domain);
     return this;
@@ -17,18 +27,24 @@ class Svg {
     return this;
   }
 
+  unsetLinearScale() {
+    this.linearScale = null;
+    return this;
+  }
+
   appendHeatMap({
     data = [0, 1],
     width = 5,
     height = 5,
-    y = 0
+    y = 0,
+    shift = { x: 0, y: 0 }
   }) {
     this.svg.append('g')
       .selectAll().data(data)
       .enter().append('rect')
       .attr('width', width)
       .attr('height', height)
-      .attr('x', (_, i) => this.linearScale ? this.linearScale(i) : i * width)
+      .attr('x', (_, i) => (this.linearScale ? this.linearScale(i) : i * width) + shift.x)
       .attr('y', y)
       .style('fill', d => this.colorScale(d));
     return this;
@@ -54,6 +70,14 @@ class Svg {
 
   appendToNode(node) {
     node.appendChild(this.svg.node());
+    return this;
+  }
+
+  appendAxisX(xAxis, offset = { x: 0, y: 0 }) {
+    this.svg
+      .append('g')
+      .attr('transform', `translate(${offset.x}, ${offset.y})`)
+      .call(xAxis);
     return this;
   }
 }

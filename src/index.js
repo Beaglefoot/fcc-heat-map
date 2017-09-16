@@ -1,8 +1,5 @@
 /* eslint no-unused-vars: off */
-import range from 'lodash/range';
 import partial from 'lodash/partial';
-import min from 'lodash/min';
-import max from 'lodash/max';
 
 import {
   heatMap as heatMapClass,
@@ -12,8 +9,14 @@ import {
 import Svg from './Svg';
 import Loading from './Loading';
 
+const d3 = require('d3');
+
 const url = 'https://raw.githubusercontent.com/FreeCodeCamp/ProjectReferenceData/master/global-temperature.json';
-const heatMapWidth = window.screen.width * 0.9;
+const svgWidth = window.innerWidth * 0.9;
+const svgHeight = window.innerHeight * 0.9;
+const svgPadding = 20;
+const heatMapWidth = svgWidth * 0.9;
+const heatMapRowHeight = 40;
 const legendBlockWidth = 50;
 const legendBlockHeight = 20;
 const legendFontSize = 14;
@@ -26,6 +29,7 @@ loading.appendToNode(app);
 loading.startAnimation();
 
 const svg = new Svg(heatMapClass);
+svg.setWidth(svgWidth).setHeight(svgHeight);
 
 
 
@@ -52,28 +56,13 @@ fetch(url)
     const totalYears = varianceByMonth.reduce(
       (numOfYears, month) => month.length > numOfYears ? month.length : numOfYears, 0
     );
+    const minYear = d3.min(monthlyVariance.map(({ year }) => year));
 
     const temperatures = monthlyVariance.map(({ variance }) => baseTemperature + variance);
-    const temperatureDomain = [Math.floor(min(temperatures)), Math.ceil(max(temperatures))];
+    const temperatureDomain = [Math.floor(d3.min(temperatures)), Math.ceil(d3.max(temperatures))];
 
     svg
       .setColorScale(temperatureDomain)
-      // Legend
-      .appendHeatMap({
-        data: range(temperatureDomain[0], temperatureDomain[1] + 1, 1),
-        width: legendBlockWidth,
-        height: legendBlockHeight
-      })
-      .appendTextGroup({
-        data: range(temperatureDomain[0], temperatureDomain[1] + 1, 1),
-        offset: {
-          x: legendBlockWidth,
-          y: legendBlockHeight + 14
-        },
-        shift: { x: legendBlockWidth / 2 - legendFontSize / 2, y: 0 },
-        className: legendText,
-        fontSize: legendFontSize
-      })
       .setLinearScale([0, totalYears], [0, heatMapWidth]);
 
 
@@ -82,11 +71,44 @@ fetch(url)
     varianceByMonth.forEach((month = [], i) => {
       svg.appendHeatMap({
         data: month.map(({ variance }) => baseTemperature + variance),
-        width: 8,
-        height: 20,
-        y: (i + 1) * 25 + 20
+        width: 7,
+        height: heatMapRowHeight,
+        y: i * (heatMapRowHeight + 0.5)
       });
     });
+
+    // Axes
+    const xAxis = d3.axisBottom()
+      .scale(svg.linearScale)
+      .tickValues(d3.range(7, totalYears, 10))
+      .tickFormat(num => num + minYear);
+
+    svg.appendAxisX(xAxis, { x: 0, y: (heatMapRowHeight + 0.5) * varianceByMonth.length });
+
+
+    // Legend
+    svg
+      .unsetLinearScale()
+      .appendHeatMap({
+        data: d3.range(temperatureDomain[0], temperatureDomain[1] + 1, 1),
+        width: legendBlockWidth,
+        height: legendBlockHeight,
+        y: svgHeight - legendBlockHeight - legendFontSize - svgPadding,
+        shift: { x: svgPadding, y: 0 }
+      })
+      .appendTextGroup({
+        data: d3.range(temperatureDomain[0], temperatureDomain[1] + 1, 1),
+        offset: {
+          x: legendBlockWidth,
+          y: 0
+        },
+        shift: {
+          x: legendBlockWidth / 2 - legendFontSize / 2 + svgPadding,
+          y: svgHeight - svgPadding
+        },
+        className: legendText,
+        fontSize: legendFontSize
+      });
 
 
     loading.removeFromNode(app);

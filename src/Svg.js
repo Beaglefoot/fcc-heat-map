@@ -45,7 +45,7 @@ class Svg {
       .attr('width', width)
       .attr('height', height)
       .attr('x', (_, i) => (this.linearScale ? this.linearScale(i) : i * width) + shift.x)
-      .attr('y', y)
+      .attr('y', y + shift.y)
       .style('fill', d => this.colorScale(d));
     return this;
   }
@@ -60,7 +60,7 @@ class Svg {
     this.svg.append('g')
       .selectAll().data(data)
       .enter().append('text')
-      .text(d => JSON.stringify(d))
+      .text(d => String(d))
       .attr('x', (_, i) => i * offset.x + shift.x)
       .attr('y', offset.y + shift.y)
       .attr('font-size', fontSize)
@@ -78,6 +78,24 @@ class Svg {
       .append('g')
       .attr('transform', `translate(${offset.x}, ${offset.y})`)
       .call(xAxis);
+    return this;
+  }
+
+  labelMonths({
+    data = [0, 1],
+    fontSize = 14,
+    offset = { x: 0, y: 0 },
+    shift = { x: 0, y: 0 }
+  }) {
+    this.svg.append('g')
+      .selectAll().data(data)
+      .enter().append('text')
+      .text(d => d)
+      .attr('font-size', fontSize)
+      .attr('alignment-baseline', 'middle')
+      .attr('x', offset.x + shift.x)
+      .attr('y', (_, i) => i * offset.y + shift.y)
+      .style('text-anchor', 'end');
     return this;
   }
 }

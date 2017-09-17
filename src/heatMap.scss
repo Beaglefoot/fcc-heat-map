@@ -5,6 +5,16 @@
 }
 
 .legend-text {
-  font-size: 14px;
   fill: orange;
+}
+
+.axes-text {
+  font-weight: 700;
+  text-anchor: middle;
+}
+
+:global {
+  #app {
+    text-align: center;
+  }
 }

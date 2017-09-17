@@ -16,15 +16,15 @@ const url = 'https://raw.githubusercontent.com/FreeCodeCamp/ProjectReferenceData
 const svgWidth = 1500;
 const svgHeight = 700;
 const svgPadding = 20;
-const heatMapWidth = svgWidth * 0.9;
 const heatMapRowHeight = 40;
-const legendBlockWidth = 50;
+const legendBlockWidth = 40;
 const legendBlockHeight = 20;
 const legendFontSize = 14;
 const axesFontSize = 18;
 const monthsAsText = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 const monthsFontSize = 16;
 const maxLengthMonth = d3.max(monthsAsText, d => d.length);
+const heatMapWidth = svgWidth - svgPadding * 2 - 2 * (monthsFontSize * (maxLengthMonth + 1));
 
 const app = document.getElementById('app');
 
@@ -113,14 +113,15 @@ const buildHeatMap = data => {
 
 
   // Legend
+  const legendBlocks = d3.range(temperatureDomain[0], temperatureDomain[1] + 1, 1);
   svg
     .unsetLinearScale()
     .appendHeatMap({
-      data: d3.range(temperatureDomain[0], temperatureDomain[1] + 1, 1),
+      data: legendBlocks,
       width: legendBlockWidth,
       height: legendBlockHeight,
       y: svgHeight - legendBlockHeight - legendFontSize - svgPadding,
-      shift: { x: svgPadding, y: 0 }
+      shift: { x: svgWidth - (svgWidth - heatMapWidth) / 2 - legendBlockWidth * legendBlocks.length, y: 0 }
     })
     .appendTextGroup({
       data: d3.range(temperatureDomain[0], temperatureDomain[1] + 1, 1),
@@ -129,7 +130,7 @@ const buildHeatMap = data => {
         y: 0
       },
       shift: {
-        x: legendBlockWidth / 2 - legendFontSize / 2 + svgPadding,
+        x: svgWidth - (svgWidth - heatMapWidth) / 2 - (legendBlockWidth * legendBlocks.length) + (legendBlockWidth / 2 - legendFontSize / 2),
         y: svgHeight - svgPadding
       },
       className: legendText,

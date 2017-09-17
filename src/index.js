@@ -7,7 +7,8 @@ import {
   axesText,
   monthsText,
   title,
-  subtitle
+  subtitle,
+  description
 } from './heatMap.scss';
 
 import Svg from './Svg';
@@ -20,7 +21,7 @@ const svgWidth = 1500;
 const svgHeight = 750;
 const svgPadding = 20;
 const heatMapRowHeight = 40;
-const legendBlockWidth = 40;
+const legendBlockWidth = 35;
 const legendBlockHeight = 20;
 const legendFontSize = 14;
 const axesFontSize = 18;
@@ -30,6 +31,8 @@ const maxLengthMonth = d3.max(monthsAsText, d => d.length);
 const heatMapWidth = svgWidth - svgPadding * 2 - 2 * (monthsFontSize * (maxLengthMonth + 1));
 const titleFontSize = 30;
 const subtitleFontSize = 24;
+const descriptionFontSize = 14;
+const totalOffsetTop = svgPadding + titleFontSize + 2 * subtitleFontSize + 2 * descriptionFontSize;
 
 const app = document.getElementById('app');
 
@@ -76,7 +79,7 @@ const buildHeatMap = data => {
       y: i * (heatMapRowHeight + 0.5),
       shift: {
         x: svgPadding + monthsFontSize * (maxLengthMonth + 1),
-        y: svgPadding + titleFontSize * 2 + subtitleFontSize
+        y: totalOffsetTop
       }
     });
   });
@@ -92,13 +95,13 @@ const buildHeatMap = data => {
   svg
     .appendAxisX(xAxis, {
       x: svgPadding + monthsFontSize * (maxLengthMonth + 1),
-      y: allRowsHeight + svgPadding + titleFontSize * 2 + subtitleFontSize
+      y: allRowsHeight + totalOffsetTop
     })
     .appendTextGroup({
       data: ['Years'],
       shift: {
         x: svgPadding + heatMapWidth / 2 + monthsFontSize * (maxLengthMonth + 1),
-        y: allRowsHeight + svgPadding + 3 * axesFontSize + titleFontSize * 2 + subtitleFontSize
+        y: allRowsHeight + 3 * axesFontSize + totalOffsetTop
       },
       fontSize: axesFontSize,
       className: axesText
@@ -109,7 +112,7 @@ const buildHeatMap = data => {
       data: monthsAsText,
       shift: {
         x: svgPadding + monthsFontSize * maxLengthMonth,
-        y: svgPadding + heatMapRowHeight * 0.5 + titleFontSize * 2 + subtitleFontSize
+        y: heatMapRowHeight * 0.5 + totalOffsetTop
       },
       offset: { x: 0, y: heatMapRowHeight + 0.5 },
       fontSize: monthsFontSize,
@@ -161,6 +164,19 @@ const buildHeatMap = data => {
       },
       fontSize: subtitleFontSize,
       className: subtitle
+    })
+    .appendTextGroup({
+      data: [
+        'Temperatures are in Celsius and reported as anomalies relative to the Jan 1951-Dec 1980 average.',
+        'Estimated Jan 1951-Dec 1980 absolute temperature ℃: 8.66 +/- 0.07'
+      ],
+      offset: { x: 0, y: descriptionFontSize },
+      shift: {
+        x: svgWidth / 2,
+        y: svgPadding + titleFontSize + subtitleFontSize + descriptionFontSize * 2
+      },
+      fontSize: descriptionFontSize,
+      className: description
     });
 
   loading.removeFromNode(app);

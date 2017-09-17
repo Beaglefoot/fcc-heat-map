@@ -1,9 +1,10 @@
+$clr_default: #333;
 $clr_dimmed: #666;
 
 .heat-map {
   background: #fff;
   box-shadow: 0 0 20px lightgrey;
-  margin-top: 10vh;
+  margin-top: 6vh;
 }
 
 .legend-text {
@@ -30,8 +31,14 @@ $clr_dimmed: #666;
   alignment-baseline: middle;
 }
 
+.description {
+  text-anchor: middle;
+  font-weight: 400;
+}
+
 :global {
   #app {
     text-align: center;
+    fill: $clr_default;
   }
 }

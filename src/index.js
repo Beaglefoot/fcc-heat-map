@@ -8,7 +8,8 @@ import {
   monthsText,
   title,
   subtitle,
-  description
+  description,
+  loadingText
 } from './heatMap.scss';
 
 import Svg from './Svg';
@@ -38,6 +39,7 @@ const app = document.getElementById('app');
 
 const loading = new Loading();
 
+loading.addClass(loadingText);
 loading.appendToNode(app);
 loading.startAnimation();
 
@@ -182,7 +184,6 @@ const buildHeatMap = data => {
   loading.removeFromNode(app);
   svg.appendToNode(app);
 };
-
 
 
 fetch(url)

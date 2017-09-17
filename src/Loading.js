@@ -25,6 +25,10 @@ class Loading {
     this.stopAnimation();
     node.removeChild(this.loading);
   }
+
+  addClass(className) {
+    this.loading.classList.add(className);
+  }
 }
 
 export default Loading;

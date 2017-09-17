@@ -4,7 +4,10 @@ import partial from 'lodash/partial';
 import {
   heatMap as heatMapClass,
   legendText,
-  axesText
+  axesText,
+  monthsText,
+  title,
+  subtitle
 } from './heatMap.scss';
 
 import Svg from './Svg';
@@ -14,7 +17,7 @@ const d3 = require('d3');
 
 const url = 'https://raw.githubusercontent.com/FreeCodeCamp/ProjectReferenceData/master/global-temperature.json';
 const svgWidth = 1500;
-const svgHeight = 700;
+const svgHeight = 750;
 const svgPadding = 20;
 const heatMapRowHeight = 40;
 const legendBlockWidth = 40;
@@ -25,6 +28,8 @@ const monthsAsText = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'S
 const monthsFontSize = 16;
 const maxLengthMonth = d3.max(monthsAsText, d => d.length);
 const heatMapWidth = svgWidth - svgPadding * 2 - 2 * (monthsFontSize * (maxLengthMonth + 1));
+const titleFontSize = 30;
+const subtitleFontSize = 24;
 
 const app = document.getElementById('app');
 
@@ -71,7 +76,7 @@ const buildHeatMap = data => {
       y: i * (heatMapRowHeight + 0.5),
       shift: {
         x: svgPadding + monthsFontSize * (maxLengthMonth + 1),
-        y: svgPadding
+        y: svgPadding + titleFontSize * 2 + subtitleFontSize
       }
     });
   });
@@ -84,31 +89,31 @@ const buildHeatMap = data => {
     .tickValues(d3.range(7, totalYears, 10))
     .tickFormat(num => num + minYear);
 
-  const xAxisText = 'Years';
-
   svg
     .appendAxisX(xAxis, {
       x: svgPadding + monthsFontSize * (maxLengthMonth + 1),
-      y: allRowsHeight + svgPadding
+      y: allRowsHeight + svgPadding + titleFontSize * 2 + subtitleFontSize
     })
     .appendTextGroup({
-      data: [xAxisText],
+      data: ['Years'],
       shift: {
         x: svgPadding + heatMapWidth / 2 + monthsFontSize * (maxLengthMonth + 1),
-        y: allRowsHeight + svgPadding + 3 * axesFontSize
+        y: allRowsHeight + svgPadding + 3 * axesFontSize + titleFontSize * 2 + subtitleFontSize
       },
       fontSize: axesFontSize,
       className: axesText
     });
 
   svg
-    .labelMonths({
+    .appendTextGroup({
       data: monthsAsText,
       shift: {
         x: svgPadding + monthsFontSize * maxLengthMonth,
-        y: svgPadding + heatMapRowHeight * 0.5
+        y: svgPadding + heatMapRowHeight * 0.5 + titleFontSize * 2 + subtitleFontSize
       },
-      offset: { x: 0, y: heatMapRowHeight + 0.5 }
+      offset: { x: 0, y: heatMapRowHeight + 0.5 },
+      fontSize: monthsFontSize,
+      className: monthsText
     });
 
 
@@ -135,6 +140,27 @@ const buildHeatMap = data => {
       },
       className: legendText,
       fontSize: legendFontSize
+    });
+
+  // Title
+  svg
+    .appendTextGroup({
+      data: ['Monthly Global Land-Surface Temperature'],
+      shift: {
+        x: svgWidth / 2,
+        y: svgPadding + titleFontSize
+      },
+      fontSize: titleFontSize,
+      className: title
+    })
+    .appendTextGroup({
+      data: ['1753 - 2015'],
+      shift: {
+        x: svgWidth / 2,
+        y: svgPadding + 2 * titleFontSize
+      },
+      fontSize: subtitleFontSize,
+      className: subtitle
     });
 
   loading.removeFromNode(app);

@@ -1,3 +1,5 @@
+$clr_dimmed: #666;
+
 .heat-map {
   background: #fff;
   box-shadow: 0 0 20px lightgrey;
@@ -5,12 +7,27 @@
 }
 
 .legend-text {
-  fill: orange;
+  fill: $clr_dimmed;
 }
 
 .axes-text {
   font-weight: 700;
   text-anchor: middle;
+}
+
+.title {
+  text-anchor: middle;
+  font-weight: 700;
+}
+
+.subtitle {
+  composes: title;
+  fill: $clr_dimmed;
+}
+
+.months-text {
+  text-anchor: end;
+  alignment-baseline: middle;
 }
 
 :global {

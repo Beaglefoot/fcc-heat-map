@@ -10,7 +10,7 @@ const devModuleConfig = require('./webpack.config.js');
 
 
 module.exports = Object.assign({}, devModuleConfig, {
-  entry: './src/index.jsx',
+  entry: './src/index.js',
 
   output: {
     path: path.resolve(__dirname, 'dist'),

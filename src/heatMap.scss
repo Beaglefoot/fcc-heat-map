@@ -41,6 +41,7 @@ $clr_dimmed: #666;
 
 .loading-text {
   font-size: 20px;
+  padding-top: 45vh;
 }
 
 .data-rect:hover {
@@ -57,6 +58,8 @@ $clr_dimmed: #666;
     background: repeating-linear-gradient(135deg, $clr_bg_second 0, $clr_bg_second 5%, $clr_bg_first 0, $clr_bg_first 50%);
     background-size: 10px 10px;
     color: #fff;
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
   }
 
   html, body {

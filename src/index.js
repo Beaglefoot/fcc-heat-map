@@ -1,5 +1,3 @@
-/* eslint no-unused-vars: off */
-import partial from 'lodash/partial';
 import flatten from 'lodash/flatten';
 import round from 'lodash/round';
 
@@ -17,7 +15,8 @@ import {
 
 import Svg from './Svg';
 import Loading from './Loading';
-import tip from './Tip';
+import tip from './tip';
+import Signature from './Signature';
 
 const d3 = require('d3');
 
@@ -28,16 +27,19 @@ const svgPadding = 20;
 const heatMapRowHeight = 40;
 const legendBlockWidth = 35;
 const legendBlockHeight = 20;
-const legendFontSize = 14;
-const axesFontSize = 18;
+const legendFontSize = 12;
+const axesFontSize = 16;
 const monthsAsText = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-const monthsFontSize = 16;
+const monthsFontSize = 14;
 const maxLengthMonth = d3.max(monthsAsText, d => d.length);
 const heatMapWidth = svgWidth - svgPadding * 2 - 2 * (monthsFontSize * (maxLengthMonth + 1));
-const titleFontSize = 30;
-const subtitleFontSize = 24;
-const descriptionFontSize = 14;
+const titleFontSize = 28;
+const subtitleFontSize = 22;
+const descriptionFontSize = 12;
 const totalOffsetTop = svgPadding + titleFontSize + 2 * subtitleFontSize + 2 * descriptionFontSize;
+
+const signature = new Signature();
+signature.appendToDocument();
 
 const app = document.getElementById('app');
 

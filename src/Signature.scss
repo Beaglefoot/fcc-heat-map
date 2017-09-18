@@ -1,0 +1,23 @@
+$clr_link: darken(gold, 6%);
+$clr_text: gray;
+
+.signature {
+  position: fixed;
+  right: 0.2em;
+  bottom: 0.1em;
+  font-family: 'VT323';
+  font-size: 14px;
+  color: lighten($clr_text, 20%);
+
+  @media screen and (min-width: 950px) {
+    right: -2em;
+    bottom: 2.3em;
+    transform: rotate(-90deg);
+  }
+}
+
+.link {
+  text-decoration: none;
+  color: $clr_link;
+  outline: none;
+}

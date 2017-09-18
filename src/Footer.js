@@ -1,4 +1,4 @@
-import { footer, link as linkClass } from './Signature.scss';
+import { footer, link as linkClass } from './Footer.scss';
 
 class Footer {
   constructor() {

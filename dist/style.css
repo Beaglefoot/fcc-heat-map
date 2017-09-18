@@ -35,17 +35,18 @@
 
 #app {
   text-align: center;
-  fill: #333; }
+  fill: #333;
+  flex-grow: 1; }
 
 body {
   background: repeating-linear-gradient(135deg, #526464 0, #526464 5%, #313842 0, #313842 50%);
   background-size: 10px 10px;
   color: #fff;
   font-family: 'Roboto', sans-serif;
-  margin: 0; }
-
-html, body {
-  height: 100%; }
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; }
 .tip__d3-tip--2p04x {
   line-height: 1;
   font-weight: bold;
@@ -95,20 +96,18 @@ html, body {
   margin: -4px 0 0 -1px;
   top: 50%;
   left: 100%; }
-.Signature__signature--2HNBs {
-  position: fixed;
-  right: 0.2em;
-  bottom: 0.1em;
+.Footer__footer--MBLJs {
   font-family: 'VT323';
   font-size: 14px;
-  color: #b3b3b3; }
-  @media screen and (min-width: 950px) {
-    .Signature__signature--2HNBs {
-      right: -2em;
-      bottom: 2.3em;
-      transform: rotate(-90deg); } }
+  color: rgba(179, 179, 179, 0.8);
+  text-align: center;
+  padding: 0.2em;
+  background: rgba(0, 0, 0, 0.1); }
 
-.Signature__link--12Tvs {
+.Footer__link--15fcO {
   text-decoration: none;
-  color: #e0bd00;
-  outline: none; }
+  color: rgba(224, 189, 0, 0.8);
+  outline: none;
+  transition: color 0.3s; }
+  .Footer__link--15fcO:hover {
+    color: #ffda14; }

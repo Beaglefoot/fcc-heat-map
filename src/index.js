@@ -16,7 +16,7 @@ import {
 import Svg from './Svg';
 import Loading from './Loading';
 import tip from './tip';
-import Signature from './Signature';
+import Footer from './Footer';
 
 const d3 = require('d3');
 
@@ -38,8 +38,8 @@ const subtitleFontSize = 22;
 const descriptionFontSize = 12;
 const totalOffsetTop = svgPadding + titleFontSize + 2 * subtitleFontSize + 2 * descriptionFontSize;
 
-const signature = new Signature();
-signature.appendToDocument();
+const footer = new Footer();
+footer.appendToDocument();
 
 const app = document.getElementById('app');
 

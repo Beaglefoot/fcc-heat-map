@@ -1,5 +1,7 @@
 /* eslint no-unused-vars: off */
 import partial from 'lodash/partial';
+import flatten from 'lodash/flatten';
+import round from 'lodash/round';
 
 import {
   heatMap as heatMapClass,
@@ -9,11 +11,13 @@ import {
   title,
   subtitle,
   description,
-  loadingText
+  loadingText,
+  dataRect
 } from './heatMap.scss';
 
 import Svg from './Svg';
 import Loading from './Loading';
+import tip from './Tip';
 
 const d3 = require('d3');
 
@@ -82,9 +86,29 @@ const buildHeatMap = data => {
       shift: {
         x: svgPadding + monthsFontSize * (maxLengthMonth + 1),
         y: totalOffsetTop
-      }
+      },
+      className: dataRect
     });
   });
+
+
+  // Hover tip
+  svg.svg.call(tip)
+    .selectAll(`.${dataRect}`)
+    .data(flatten(varianceByMonth))
+    .on('mouseover', (d, i) => {
+      tip.show(''.concat(
+        `${monthsAsText[Math.floor(i / totalYears)]} ${d.year}`,
+        '<br>',
+        round(baseTemperature + d.variance, 3),
+        '°C',
+        '<br>',
+        (variance => variance > 0 ? `+${variance}` : variance)(round(d.variance, 3))
+      )).style('text-align', 'center');
+    })
+    .on('mouseout', () => tip.hide());
+
+
 
   const allRowsHeight = (heatMapRowHeight + 0.5) * varianceByMonth.length;
 
@@ -140,12 +164,13 @@ const buildHeatMap = data => {
         y: 0
       },
       shift: {
-        x: svgWidth - (svgWidth - heatMapWidth) / 2 - (legendBlockWidth * legendBlocks.length) + (legendBlockWidth / 2 - legendFontSize / 2),
+        x: svgWidth - (svgWidth - heatMapWidth) / 2 - (legendBlockWidth * legendBlocks.length) + (legendBlockWidth / 2),
         y: svgHeight - svgPadding
       },
       className: legendText,
       fontSize: legendFontSize
     });
+
 
   // Title
   svg

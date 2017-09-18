@@ -11,6 +11,7 @@ $clr_dimmed: #666;
 
 .legend-text {
   fill: $clr_dimmed;
+  text-anchor: middle;
 }
 
 .axes-text {
@@ -40,6 +41,10 @@ $clr_dimmed: #666;
 
 .loading-text {
   font-size: 20px;
+}
+
+.data-rect:hover {
+  opacity: 0.6;
 }
 
 :global {

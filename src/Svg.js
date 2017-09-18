@@ -37,7 +37,8 @@ class Svg {
     width = 5,
     height = 5,
     y = 0,
-    shift = { x: 0, y: 0 }
+    shift = { x: 0, y: 0 },
+    className
   }) {
     this.svg.append('g')
       .selectAll().data(data)
@@ -46,7 +47,8 @@ class Svg {
       .attr('height', height)
       .attr('x', (_, i) => (this.linearScale ? this.linearScale(i) : i * width) + shift.x)
       .attr('y', y + shift.y)
-      .style('fill', d => this.colorScale(d));
+      .style('fill', d => this.colorScale(d))
+      .classed(className, !!className);
     return this;
   }
 
@@ -55,8 +57,7 @@ class Svg {
     offset = { x: 0, y: 0 },
     shift = { x: 0, y: 0 },
     className = '',
-    fontSize = 14,
-    classDispenser
+    fontSize = 14
   }) {
     this.svg.append('g')
       .selectAll().data(data)
@@ -65,7 +66,7 @@ class Svg {
       .attr('x', (_, i) => i * offset.x + shift.x)
       .attr('y', (_, i) => i * offset.y + shift.y)
       .attr('font-size', fontSize)
-      .classed(className, classDispenser || true);
+      .classed(className, true);
     return this;
   }
 

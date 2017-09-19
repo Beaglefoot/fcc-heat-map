@@ -75,10 +75,11 @@ class Svg {
     return this;
   }
 
-  appendAxisX(xAxis, offset = { x: 0, y: 0 }) {
+  appendAxisX({ xAxis, offset = { x: 0, y: 0 }, fontSize }) {
     this.svg
       .append('g')
       .attr('transform', `translate(${offset.x}, ${offset.y})`)
+      .style('font-size', fontSize)
       .call(xAxis);
     return this;
   }

@@ -11,12 +11,12 @@ import {
   description,
   loadingText,
   dataRect
-} from './heatMap.scss';
+} from './index.scss';
 
-import Svg from './Svg';
-import Loading from './Loading';
-import tip from './tip';
-import Footer from './Footer';
+import Svg from './Svg/Svg';
+import Loading from './Loading/Loading';
+import tip from './tip/tip';
+import Footer from './Footer/Footer';
 
 const d3 = require('d3');
 
@@ -36,6 +36,7 @@ const heatMapWidth = svgWidth - svgPadding * 2 - 2 * (monthsFontSize * (maxLengt
 const titleFontSize = 28;
 const subtitleFontSize = 22;
 const descriptionFontSize = 12;
+const xAxisFontSize = 12;
 const totalOffsetTop = svgPadding + titleFontSize + 2 * subtitleFontSize + 2 * descriptionFontSize;
 
 const footer = new Footer();
@@ -121,10 +122,10 @@ const buildHeatMap = data => {
     .tickFormat(num => num + minYear);
 
   svg
-    .appendAxisX(xAxis, {
+    .appendAxisX({ xAxis, fontSize: xAxisFontSize, offset: {
       x: svgPadding + monthsFontSize * (maxLengthMonth + 1),
       y: allRowsHeight + totalOffsetTop
-    })
+    }})
     .appendTextGroup({
       data: ['Years'],
       shift: {
